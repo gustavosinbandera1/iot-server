@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: mongo-container
+    build: ./MongoDocker
+    image: mi_mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    container_name: redis-container
+    image: redis
+    command: redis-server /etc/redis/redis.conf
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
+    ports:
+      - "7210:7210"
+#   redis:
+#     container_name: redis-container
+#     build: ./RedisDocker
+#     image: mi-redis-to-rtns
+#     ports:
+#       - "7210:7210"
+
+  rtns:
+    build:
+      context: ./rtns_service
+      dockerfile: Dockerfile
+    container_name: rtns-container
+    restart: always
+    hostname: rtns
+    links: 
+        - mongo
+       # - redis
+    ports:
+        - "1339:1339"
+
+
+volumes:
+  dbdata:
+  node_modules:
+
+
+#run and build
+#sudo docker-compose up --build
+
+# docker container stop $(docker container ls -aq)
+# docker container rm $(docker container ls -aq)
+# docker image rm $(docker image ls -aq)
+#docker container rm $(docker container ls -aq)
+# docker ps -a
+#docker image prune
+# docker volume prune
+# docker network ls
+# docker network rm c520032c3d31
+# docker network prune
+# docker system prune
+# docker system prune --volumes
+# docker container ls -a
+# docker container rm cc3f2ff51cab cd20b396a061
+# docker container prune
+# docker container ls -aq
+# docker container stop $(docker container ls -aq)
+# docker container rm $(docker container ls -aq)
+# docker image ls
+# docker image rm 75835a67d134 2a4cca5ac898
+# docker image prune
+# docker image prune -a                 (--remove unused images
